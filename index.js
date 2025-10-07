@@ -7,7 +7,7 @@ const converter = require('openapi-to-postmanv2');
  * Configuration Section
  * Replace these values with your own.
  */
-const SWAGGER_URL = 'http://localhost:6011/api-json';   // URL where your NestJS Swagger is available
+const SWAGGER_URL = process.env.SWAGGER_URL;   // URL where your NestJS Swagger is available
 const POSTMAN_API_KEY = process.env.POSTMAN_API_KEY;
 const POSTMAN_COLLECTION_UID = process.env.POSTMAN_COLLECTION_UID;
 
