@@ -1,14 +1,38 @@
 {
   "name": "swagger-to-postman",
   "version": "1.0.0",
+  "description": "A Node.js tool that converts Swagger/OpenAPI specifications to Postman collections and automatically updates them via the Postman API",
   "main": "index.js",
   "scripts": {
+    "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "swagger",
+    "openapi",
+    "postman",
+    "api",
+    "converter",
+    "documentation",
+    "rest",
+    "api-testing",
+    "postman-collection",
+    "swagger-to-postman",
+    "openapi-to-postman"
+  ],
+  "author": "UAhmadSoft",
   "license": "ISC",
-  "description": "",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/UAhmadSoft/swagger-to-postman.git"
+  },
+  "bugs": {
+    "url": "https://github.com/UAhmadSoft/swagger-to-postman/issues"
+  },
+  "homepage": "https://github.com/UAhmadSoft/swagger-to-postman#readme",
+  "engines": {
+    "node": ">=12.0.0"
+  },
   "dependencies": {
     "axios": "^1.7.9",
     "dotenv": "^16.4.7",
