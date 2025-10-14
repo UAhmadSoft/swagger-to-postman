@@ -92,23 +92,64 @@ console.log(chalk.cyan.bold('╚════════════════
         data: postmanCollection
       };
 
-      axios.request(config).then(res => {
-        updateSpinner.succeed(chalk.green.bold('✓ Postman collection updated successfully!'));
-        console.log(chalk.cyan('\n📦 Collection Details:'));
-        console.log(chalk.gray(`   Name: ${res.data.collection?.name || 'N/A'}`));
-        console.log(chalk.gray(`   UID: ${res.data.collection?.uid || POSTMAN_COLLECTION_UID}`));
-        console.log(chalk.green.bold('\n🎉 All operations completed successfully!\n'));
-      })
-        .catch(error => {
-          updateSpinner.fail(chalk.red.bold('✗ Failed to update Postman collection!'));
-          console.error(chalk.red.bold('\n❌ Error Details:'));
-          if (error.response?.data) {
-            console.error(chalk.red(JSON.stringify(error.response.data, null, 2)));
-          } else {
-            console.error(chalk.red(error.message));
-          }
-          console.log(chalk.yellow('\n💡 Tip: Check your API key and Collection UID in the .env file\n'));
-        });
+      // Before updating, fetch the existing collection to preserve its name
+      const getConfig = {
+        method: 'get',
+        url: `https://api.getpostman.com/collections/${POSTMAN_COLLECTION_UID}`,
+        headers: {
+          'X-API-Key': POSTMAN_API_KEY,
+        }
+      };
+
+      axios.request(getConfig).then(getRes => {
+        const existingName = getRes.data.collection?.info?.name;
+        if (existingName) {
+          // The Postman update endpoint expects the collection payload under `collection` with `info.name`.
+          // Ensure we set the existing name so the PUT won't rename the collection.
+          if (!postmanCollection.collection.info) postmanCollection.collection.info = {};
+          postmanCollection.collection.info.name = existingName;
+        }
+
+        // Now perform the PUT to update collection contents without changing name
+        axios.request(config).then(res => {
+          updateSpinner.succeed(chalk.green.bold('✓ Postman collection updated successfully!'));
+          console.log(chalk.cyan('\n📦 Collection Details:'));
+          console.log(chalk.gray(`   Name: ${postmanCollection.collection.info?.name || 'N/A'}`));
+          console.log(chalk.gray(`   UID: ${res.data.collection?.uid || POSTMAN_COLLECTION_UID}`));
+          console.log(chalk.green.bold('\n🎉 All operations completed successfully!\n'));
+        })
+          .catch(error => {
+            updateSpinner.fail(chalk.red.bold('✗ Failed to update Postman collection!'));
+            console.error(chalk.red.bold('\n❌ Error Details:'));
+            if (error.response?.data) {
+              console.error(chalk.red(JSON.stringify(error.response.data, null, 2)));
+            } else {
+              console.error(chalk.red(error.message));
+            }
+            console.log(chalk.yellow('\n💡 Tip: Check your API key and Collection UID in the .env file\n'));
+          });
+
+      }).catch(err => {
+        // If we can't fetch the existing collection, proceed with PUT but warn the user
+        console.log(chalk.yellow('⚠️ Could not fetch existing collection name. The collection name might be changed by this update.'));
+        axios.request(config).then(res => {
+          updateSpinner.succeed(chalk.green.bold('✓ Postman collection updated successfully!'));
+          console.log(chalk.cyan('\n📦 Collection Details:'));
+          console.log(chalk.gray(`   Name: ${res.data.collection?.name || postmanCollection.collection.info?.name || 'N/A'}`));
+          console.log(chalk.gray(`   UID: ${res.data.collection?.uid || POSTMAN_COLLECTION_UID}`));
+          console.log(chalk.green.bold('\n🎉 All operations completed successfully!\n'));
+        })
+          .catch(error => {
+            updateSpinner.fail(chalk.red.bold('✗ Failed to update Postman collection!'));
+            console.error(chalk.red.bold('\n❌ Error Details:'));
+            if (error.response?.data) {
+              console.error(chalk.red(JSON.stringify(error.response.data, null, 2)));
+            } else {
+              console.error(chalk.red(error.message));
+            }
+            console.log(chalk.yellow('\n💡 Tip: Check your API key and Collection UID in the .env file\n'));
+          });
+      });
     });
   } catch (error) {
     if (fetchSpinner) fetchSpinner.fail(chalk.red.bold('✗ Failed to fetch Swagger specification!'));
