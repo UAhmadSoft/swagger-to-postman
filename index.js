@@ -36,6 +36,10 @@ console.log(chalk.cyan.bold('╚════════════════
     fetchSpinner.succeed(chalk.green.bold('✓ Swagger specification fetched successfully!'));
     console.log(chalk.gray(`   URL: ${SWAGGER_URL}\n`));
 
+    // Save the raw Swagger spec for debugging
+    fs.writeFileSync('raw-swagger-spec.json', JSON.stringify(swaggerSpec, null, 2), 'utf-8');
+    console.log(chalk.gray('   📄 Raw Swagger spec saved to raw-swagger-spec.json\n'));
+
     // 2. Convert the Swagger/OpenAPI spec to a Postman Collection
     convertSpinner = ora({
       text: chalk.blue.bold('Converting to Postman Collection v2...'),
@@ -43,7 +47,13 @@ console.log(chalk.cyan.bold('╚════════════════
     }).start();
 
     // The converter expects a callback style invocation
-    converter.convert({ type: 'json', data: swaggerSpec }, {}, (err, conversionResult) => {
+    const converterOptions = {
+      requestParametersResolution: 'Example',
+      exampleParametersResolution: 'Example',
+      folderStrategy: 'Tags'
+    };
+
+    converter.convert({ type: 'json', data: swaggerSpec }, converterOptions, (err, conversionResult) => {
       if (err) {
         convertSpinner.fail(chalk.red.bold('✗ Conversion failed!'));
         console.error(chalk.red('Error:'), err);
@@ -61,6 +71,35 @@ console.log(chalk.cyan.bold('╚════════════════
       const postmanCollection = {
         collection: conversionResult.output[0].data
       };
+
+      // Post-process: Replace placeholder query param values with actual examples
+      function replaceQueryParamPlaceholders(items) {
+        if (!items) return;
+
+        items.forEach(item => {
+          if (item.item) {
+            // Recursively process nested items
+            replaceQueryParamPlaceholders(item.item);
+          }
+
+          if (item.request && item.request.url && item.request.url.query) {
+            item.request.url.query.forEach(param => {
+              // Find the corresponding example from the response
+              if (item.response && item.response[0] && item.response[0].originalRequest) {
+                const exampleQuery = item.response[0].originalRequest.url.query;
+                if (exampleQuery) {
+                  const exampleParam = exampleQuery.find(q => q.key === param.key);
+                  if (exampleParam && exampleParam.value && !exampleParam.value.startsWith('<')) {
+                    param.value = exampleParam.value;
+                  }
+                }
+              }
+            });
+          }
+        });
+      }
+
+      replaceQueryParamPlaceholders(postmanCollection.collection.item);
 
       // Save the new Postman collection data to a file
       const saveSpinner = ora({

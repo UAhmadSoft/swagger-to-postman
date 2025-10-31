@@ -1,0 +1,3561 @@
+{
+  "openapi": "3.0.0",
+  "paths": {
+    "/auth/login": {
+      "post": {
+        "operationId": "AuthController_login",
+        "summary": "Log in with email and password",
+        "description": "login",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AuthLoginDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful login",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "user": {
+                      "id": 1,
+                      "email": "user@example.com",
+                      "is_active": true
+                    },
+                    "authentication": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "No authorization token was found"
+          },
+          "500": {
+            "description": "Internal error"
+          }
+        },
+        "tags": [
+          "auth"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/auth/google-login": {
+      "post": {
+        "operationId": "AuthController_googleLogin",
+        "summary": "Log in using Google account",
+        "description": "google-login",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AuthGoogleDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Google login",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "user": {
+                      "id": 1,
+                      "email": "user@gmail.com"
+                    },
+                    "authentication": "jwt-token"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "No authorization token was found"
+          },
+          "500": {
+            "description": "Internal error"
+          }
+        },
+        "tags": [
+          "auth"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/auth/signup": {
+      "post": {
+        "operationId": "AuthController_SignUp",
+        "summary": "Create a new user (signup)",
+        "description": "sign up",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AuthSignUpDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "User created and OTP sent for confirmation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "status": "success",
+                    "message": "Otp is Sent to your email ,please verify your email "
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "No authorization token was found"
+          },
+          "500": {
+            "description": "Internal error"
+          }
+        },
+        "tags": [
+          "auth"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/auth/confirm-signup": {
+      "post": {
+        "operationId": "AuthController_ConfirmUserSignUp",
+        "summary": "Confirm signup with verification code",
+        "description": "confirm sign up",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AuthConfirmSignUpDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User confirmed and token returned",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "user": {
+                      "id": 1,
+                      "email": "user@example.com"
+                    },
+                    "authentication": "jwt-token"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "No authorization token was found"
+          },
+          "500": {
+            "description": "Internal error"
+          }
+        },
+        "tags": [
+          "auth"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/auth/resend-code-email": {
+      "post": {
+        "operationId": "AuthController_ResendCode",
+        "summary": "Resend confirmation code to email",
+        "description": "sign up",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ResendCodeDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Resent confirmation code",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "status": "success",
+                    "message": "Email sent with code for confirmation"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "No authorization token was found"
+          },
+          "500": {
+            "description": "Internal error"
+          }
+        },
+        "tags": [
+          "auth"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/auth/forgot-password": {
+      "post": {
+        "operationId": "AuthController_forgotPassword",
+        "summary": "Request a password reset email/code",
+        "description": "forgot-password",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ForgotPasswordDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Password reset request accepted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "message": "Reset email sent"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "No authorization token was found"
+          },
+          "500": {
+            "description": "Internal error"
+          }
+        },
+        "tags": [
+          "auth"
+        ]
+      }
+    },
+    "/auth/set-password/{code}": {
+      "put": {
+        "operationId": "AuthController_setPassword",
+        "summary": "Set a new password using a reset code",
+        "parameters": [
+          {
+            "name": "code",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SetPasswordDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Password set successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "status": "success",
+                    "message": "Password Updated successfully"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "No authorization token was found"
+          },
+          "500": {
+            "description": "Internal error"
+          }
+        },
+        "tags": [
+          "auth"
+        ]
+      }
+    },
+    "/auth/reset-password/{code}": {
+      "patch": {
+        "operationId": "AuthController_resetPassword",
+        "summary": "Reset password using provided code",
+        "parameters": [
+          {
+            "name": "code",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ResetPasswordDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Password reset and user updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "id": 1,
+                    "email": "user@example.com"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "No authorization token was found"
+          },
+          "500": {
+            "description": "Internal error"
+          }
+        },
+        "tags": [
+          "auth"
+        ]
+      }
+    },
+    "/auth/update-password": {
+      "patch": {
+        "operationId": "AuthController_updatePassword",
+        "summary": "Update the logged-in user's password",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdatePasswordDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Password updated and user returned",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "id": 1,
+                    "email": "user@example.com"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "No authorization token was found"
+          },
+          "500": {
+            "description": "Internal error"
+          }
+        },
+        "tags": [
+          "auth"
+        ]
+      }
+    },
+    "/communities": {
+      "post": {
+        "operationId": "CommunitiesController_createCommunities",
+        "summary": "Create Communities",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateCommunitiesDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Community created successfully",
+            "content": {
+              "application/json": {
+                "example": {
+                  "id": 1,
+                  "name": "Quran Study Circle",
+                  "description": "A community dedicated to daily Quran recitation and reflection",
+                  "badge_url": "https://example.com/badges/quran-circle.png",
+                  "community_type": "PUBLIC",
+                  "join_code": "QSC2025",
+                  "is_active": true,
+                  "auto_approve_members": true,
+                  "created_by_id": 123,
+                  "created_on": "2025-10-31T10:00:00Z",
+                  "updated_on": "2025-10-31T10:00:00Z"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation failed",
+            "content": {
+              "application/json": {
+                "example": {
+                  "statusCode": 400,
+                  "message": "name must be a string; name should not be empty; community_type must be one of the following values: PUBLIC, PRIVATE; community_type should not be empty"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "example": {
+                  "statusCode": 401,
+                  "message": "Unauthorized",
+                  "error": "Unauthorized"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Communities"
+        ]
+      },
+      "get": {
+        "operationId": "CommunitiesController_getCommunities",
+        "summary": "Get all Communities",
+        "parameters": [
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "example": 1,
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "example": 10,
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "sort",
+            "required": false,
+            "in": "query",
+            "example": "-created_at",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "community_type",
+            "required": false,
+            "in": "query",
+            "description": "Filter by community type",
+            "example": "PUBLIC",
+            "schema": {
+              "enum": [
+                "PUBLIC",
+                "PRIVATE"
+              ],
+              "type": "string"
+            }
+          },
+          {
+            "name": "is_active",
+            "required": false,
+            "in": "query",
+            "description": "Filter by active status",
+            "example": "true",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "auto_approve_members",
+            "required": false,
+            "in": "query",
+            "description": "Filter by auto approve members setting",
+            "example": "true",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "created_by_id",
+            "required": false,
+            "in": "query",
+            "description": "Filter by creator user ID",
+            "example": 123,
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "created_from",
+            "required": false,
+            "in": "query",
+            "description": "Filter communities by date range",
+            "example": "2025-01-01T00:00:00Z",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "created_to",
+            "required": false,
+            "in": "query",
+            "description": "Filter communities by date range",
+            "example": "2025-10-31T23:59:59Z",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "search",
+            "required": false,
+            "in": "query",
+            "description": "General search across name and description",
+            "example": "Quran",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Communities retrieved successfully",
+            "content": {
+              "application/json": {
+                "example": {
+                  "data": [
+                    {
+                      "id": 1,
+                      "name": "Quran Study Circle",
+                      "description": "A community dedicated to daily Quran recitation and reflection",
+                      "badge_url": "https://example.com/badges/quran-circle.png",
+                      "community_type": "PUBLIC",
+                      "join_code": "QSC2025",
+                      "is_active": true,
+                      "auto_approve_members": true,
+                      "created_by_id": 123,
+                      "created_on": "2025-10-31T10:00:00Z",
+                      "updated_on": "2025-10-31T10:00:00Z"
+                    },
+                    {
+                      "id": 2,
+                      "name": "Daily Tafsir Group",
+                      "description": "Learn Quran interpretation together",
+                      "badge_url": "https://example.com/badges/tafsir.png",
+                      "community_type": "PRIVATE",
+                      "join_code": "TAFSIR2025",
+                      "is_active": true,
+                      "auto_approve_members": false,
+                      "created_by_id": 124,
+                      "created_on": "2025-10-30T08:00:00Z",
+                      "updated_on": "2025-10-30T08:00:00Z"
+                    }
+                  ],
+                  "meta": {
+                    "total": 50,
+                    "page": 1,
+                    "limit": 10
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "example": {
+                  "statusCode": 401,
+                  "message": "Unauthorized",
+                  "error": "Unauthorized"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Communities"
+        ]
+      }
+    },
+    "/communities/public": {
+      "get": {
+        "operationId": "CommunitiesController_getPublicCommunities",
+        "summary": "Get public communities",
+        "parameters": [
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "example": 1,
+            "schema": {
+              "example": 1
+            },
+            "content": {
+              "application/json": {
+                "example": 1
+              }
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "example": 10,
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "sort",
+            "required": false,
+            "in": "query",
+            "example": "-created_at",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "community_type",
+            "required": false,
+            "in": "query",
+            "description": "Filter by community type",
+            "example": "PUBLIC",
+            "schema": {
+              "enum": [
+                "PUBLIC",
+                "PRIVATE"
+              ],
+              "type": "string"
+            }
+          },
+          {
+            "name": "is_active",
+            "required": false,
+            "in": "query",
+            "description": "Filter by active status",
+            "example": "true",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "auto_approve_members",
+            "required": false,
+            "in": "query",
+            "description": "Filter by auto approve members setting",
+            "example": "true",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "created_by_id",
+            "required": false,
+            "in": "query",
+            "description": "Filter by creator user ID",
+            "example": 123,
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "created_from",
+            "required": false,
+            "in": "query",
+            "description": "Filter communities by date range",
+            "example": "2025-01-01T00:00:00Z",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "created_to",
+            "required": false,
+            "in": "query",
+            "description": "Filter communities by date range",
+            "example": "2025-10-31T23:59:59Z",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "search",
+            "required": false,
+            "in": "query",
+            "description": "General search across name and description",
+            "example": "Quran",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Public communities retrieved successfully",
+            "content": {
+              "application/json": {
+                "example": {
+                  "data": [
+                    {
+                      "id": 1,
+                      "name": "Quran Study Circle",
+                      "description": "A community dedicated to daily Quran recitation and reflection",
+                      "badge_url": "https://example.com/badges/quran-circle.png",
+                      "community_type": "PUBLIC",
+                      "join_code": "QSC2025",
+                      "is_active": true,
+                      "auto_approve_members": true,
+                      "created_by_id": 123,
+                      "created_on": "2025-10-31T10:00:00Z",
+                      "updated_on": "2025-10-31T10:00:00Z"
+                    },
+                    {
+                      "id": 2,
+                      "name": "Daily Tafsir Group",
+                      "description": "Learn Quran interpretation together",
+                      "badge_url": "https://example.com/badges/tafsir.png",
+                      "community_type": "PUBLIC",
+                      "join_code": "TAFSIR2025",
+                      "is_active": true,
+                      "auto_approve_members": false,
+                      "created_by_id": 124,
+                      "created_on": "2025-10-30T08:00:00Z",
+                      "updated_on": "2025-10-30T08:00:00Z"
+                    }
+                  ],
+                  "meta": {
+                    "total": 25,
+                    "page": 1,
+                    "limit": 10
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Communities"
+        ]
+      }
+    },
+    "/communities/join-code/{code}": {
+      "get": {
+        "operationId": "CommunitiesController_findByJoinCode",
+        "summary": "Find community by join code",
+        "parameters": [
+          {
+            "name": "code",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Community found",
+            "content": {
+              "application/json": {
+                "example": {
+                  "id": 1,
+                  "name": "Quran Study Circle",
+                  "description": "A community dedicated to daily Quran recitation and reflection",
+                  "badge_url": "https://example.com/badges/quran-circle.png",
+                  "community_type": "PUBLIC",
+                  "join_code": "QSC2025",
+                  "is_active": true,
+                  "auto_approve_members": true,
+                  "created_by_id": 123,
+                  "created_on": "2025-10-31T10:00:00Z",
+                  "updated_on": "2025-10-31T10:00:00Z"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Community not found",
+            "content": {
+              "application/json": {
+                "example": {
+                  "statusCode": 404,
+                  "message": "Community with join code not found",
+                  "error": "Not Found"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Communities"
+        ]
+      }
+    },
+    "/communities/user/{userId}": {
+      "get": {
+        "operationId": "CommunitiesController_getUserCommunities",
+        "summary": "Get user communities",
+        "parameters": [
+          {
+            "name": "userId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User communities retrieved successfully",
+            "content": {
+              "application/json": {
+                "example": [
+                  {
+                    "id": 1,
+                    "name": "Quran Study Circle",
+                    "description": "A community dedicated to daily Quran recitation and reflection",
+                    "badge_url": "https://example.com/badges/quran-circle.png",
+                    "community_type": "PUBLIC",
+                    "join_code": "QSC2025",
+                    "is_active": true,
+                    "auto_approve_members": true,
+                    "created_by_id": 123,
+                    "created_on": "2025-10-31T10:00:00Z",
+                    "updated_on": "2025-10-31T10:00:00Z"
+                  }
+                ]
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "example": {
+                  "statusCode": 401,
+                  "message": "Unauthorized",
+                  "error": "Unauthorized"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Communities"
+        ]
+      }
+    },
+    "/communities/{id}": {
+      "get": {
+        "operationId": "CommunitiesController_getCommunitiesById",
+        "summary": "Get Communities by id",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Community retrieved successfully",
+            "content": {
+              "application/json": {
+                "example": {
+                  "id": 1,
+                  "name": "Quran Study Circle",
+                  "description": "A community dedicated to daily Quran recitation and reflection",
+                  "badge_url": "https://example.com/badges/quran-circle.png",
+                  "community_type": "PUBLIC",
+                  "join_code": "QSC2025",
+                  "is_active": true,
+                  "auto_approve_members": true,
+                  "created_by_id": 123,
+                  "created_on": "2025-10-31T10:00:00Z",
+                  "updated_on": "2025-10-31T10:00:00Z"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "example": {
+                  "statusCode": 401,
+                  "message": "Unauthorized",
+                  "error": "Unauthorized"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Community not found",
+            "content": {
+              "application/json": {
+                "example": {
+                  "statusCode": 404,
+                  "message": "Community not found",
+                  "error": "Not Found"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Communities"
+        ]
+      },
+      "put": {
+        "operationId": "CommunitiesController_updateCommunities",
+        "summary": "Update Communities",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateCommunitiesDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Community updated successfully",
+            "content": {
+              "application/json": {
+                "example": {
+                  "id": 1,
+                  "name": "Quran Study Circle - Updated",
+                  "description": "Updated description for our Quran study community",
+                  "badge_url": "https://example.com/badges/quran-circle-v2.png",
+                  "community_type": "PRIVATE",
+                  "join_code": "QSC2025NEW",
+                  "is_active": true,
+                  "auto_approve_members": true,
+                  "created_by_id": 123,
+                  "created_on": "2025-10-31T10:00:00Z",
+                  "updated_on": "2025-10-31T15:30:00Z"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation failed",
+            "content": {
+              "application/json": {
+                "example": {
+                  "statusCode": 400,
+                  "message": "community_type must be one of the following values: PUBLIC, PRIVATE"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "example": {
+                  "statusCode": 401,
+                  "message": "Unauthorized",
+                  "error": "Unauthorized"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Community not found",
+            "content": {
+              "application/json": {
+                "example": {
+                  "statusCode": 404,
+                  "message": "Community not found",
+                  "error": "Not Found"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Communities"
+        ]
+      },
+      "delete": {
+        "operationId": "CommunitiesController_deleteCommunities",
+        "summary": "Delete Communities",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Community deleted successfully",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "Community deleted successfully"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "example": {
+                  "statusCode": 401,
+                  "message": "Unauthorized",
+                  "error": "Unauthorized"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Community not found",
+            "content": {
+              "application/json": {
+                "example": {
+                  "statusCode": 404,
+                  "message": "Community not found",
+                  "error": "Not Found"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Communities"
+        ]
+      }
+    },
+    "/communities/{id}/community_members": {
+      "get": {
+        "operationId": "CommunitiesController_getcommunityMembersOfCommunities",
+        "summary": "Get community_members of Communities",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Community members retrieved successfully",
+            "content": {
+              "application/json": {
+                "example": [
+                  {
+                    "id": 1,
+                    "role": "ADMIN",
+                    "status": "ACTIVE",
+                    "joined_at": "2025-10-31T10:00:00Z",
+                    "user_id": 123,
+                    "community_id": 1,
+                    "created_on": "2025-10-31T10:00:00Z",
+                    "updated_on": "2025-10-31T10:00:00Z"
+                  },
+                  {
+                    "id": 2,
+                    "role": "MEMBER",
+                    "status": "ACTIVE",
+                    "joined_at": "2025-10-31T11:00:00Z",
+                    "user_id": 124,
+                    "community_id": 1,
+                    "created_on": "2025-10-31T11:00:00Z",
+                    "updated_on": "2025-10-31T11:00:00Z"
+                  }
+                ]
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "example": {
+                  "statusCode": 401,
+                  "message": "Unauthorized",
+                  "error": "Unauthorized"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Community not found",
+            "content": {
+              "application/json": {
+                "example": {
+                  "statusCode": 404,
+                  "message": "Community not found",
+                  "error": "Not Found"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Communities"
+        ]
+      }
+    },
+    "/community_members": {
+      "post": {
+        "operationId": "CommunityMembersController_createCommunityMembers",
+        "summary": "Create CommunityMembers",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateCommunityMembersDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Community member created successfully",
+            "content": {
+              "application/json": {
+                "example": {
+                  "id": 1,
+                  "role": "MEMBER",
+                  "status": "ACTIVE",
+                  "joined_at": "2025-10-31T10:00:00Z",
+                  "user_id": 123,
+                  "community_id": 1,
+                  "created_on": "2025-10-31T10:00:00Z",
+                  "updated_on": "2025-10-31T10:00:00Z"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation failed",
+            "content": {
+              "application/json": {
+                "example": {
+                  "statusCode": 400,
+                  "message": "role must be one of the following values: ADMIN, MEMBER; role should not be empty; status must be one of the following values: ACTIVE, PENDING, BANNED; status should not be empty"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "example": {
+                  "statusCode": 401,
+                  "message": "Unauthorized",
+                  "error": "Unauthorized"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Community Members"
+        ]
+      },
+      "get": {
+        "operationId": "CommunityMembersController_getCommunityMembers",
+        "summary": "Get all CommunityMembers",
+        "parameters": [
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "example": 1,
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "example": 10,
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "sort",
+            "required": false,
+            "in": "query",
+            "example": "-joined_at",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Community members retrieved successfully",
+            "content": {
+              "application/json": {
+                "example": {
+                  "data": [
+                    {
+                      "id": 1,
+                      "role": "ADMIN",
+                      "status": "ACTIVE",
+                      "joined_at": "2025-10-31T10:00:00Z",
+                      "user_id": 123,
+                      "community_id": 1,
+                      "created_on": "2025-10-31T10:00:00Z",
+                      "updated_on": "2025-10-31T10:00:00Z"
+                    },
+                    {
+                      "id": 2,
+                      "role": "MEMBER",
+                      "status": "ACTIVE",
+                      "joined_at": "2025-10-31T11:00:00Z",
+                      "user_id": 124,
+                      "community_id": 1,
+                      "created_on": "2025-10-31T11:00:00Z",
+                      "updated_on": "2025-10-31T11:00:00Z"
+                    }
+                  ],
+                  "meta": {
+                    "total": 50,
+                    "page": 1,
+                    "limit": 10
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "example": {
+                  "statusCode": 401,
+                  "message": "Unauthorized",
+                  "error": "Unauthorized"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Community Members"
+        ]
+      }
+    },
+    "/community_members/add": {
+      "post": {
+        "operationId": "CommunityMembersController_addMember",
+        "summary": "Add member to community",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddMemberDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Member added to community successfully",
+            "content": {
+              "application/json": {
+                "example": {
+                  "id": 2,
+                  "role": "MEMBER",
+                  "status": "ACTIVE",
+                  "joined_at": "2025-10-31T11:00:00Z",
+                  "user_id": 124,
+                  "community_id": 1,
+                  "created_on": "2025-10-31T11:00:00Z",
+                  "updated_on": "2025-10-31T11:00:00Z"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation failed or member already exists",
+            "content": {
+              "application/json": {
+                "example": {
+                  "statusCode": 400,
+                  "message": "User is already a member of this community"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "example": {
+                  "statusCode": 401,
+                  "message": "Unauthorized",
+                  "error": "Unauthorized"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User or community not found",
+            "content": {
+              "application/json": {
+                "example": {
+                  "statusCode": 404,
+                  "message": "Community not found",
+                  "error": "Not Found"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Community Members"
+        ]
+      }
+    },
+    "/community_members/remove": {
+      "post": {
+        "operationId": "CommunityMembersController_removeMember",
+        "summary": "Remove member from community",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RemoveMemberDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Member removed from community successfully",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "Member removed successfully"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "example": {
+                  "statusCode": 401,
+                  "message": "Unauthorized",
+                  "error": "Unauthorized"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Member not found",
+            "content": {
+              "application/json": {
+                "example": {
+                  "statusCode": 404,
+                  "message": "Member not found in this community",
+                  "error": "Not Found"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Community Members"
+        ]
+      }
+    },
+    "/community_members/check/{userId}/{communityId}": {
+      "get": {
+        "operationId": "CommunityMembersController_checkMembership",
+        "summary": "Check membership",
+        "parameters": [
+          {
+            "name": "userId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "communityId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Membership status retrieved",
+            "content": {
+              "application/json": {
+                "example": {
+                  "isMember": true,
+                  "membership": {
+                    "id": 1,
+                    "role": "MEMBER",
+                    "status": "ACTIVE",
+                    "joined_at": "2025-10-31T10:00:00Z",
+                    "user_id": 123,
+                    "community_id": 1
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "example": {
+                  "statusCode": 401,
+                  "message": "Unauthorized",
+                  "error": "Unauthorized"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Community Members"
+        ]
+      }
+    },
+    "/community_members/community/{communityId}/status/{status}": {
+      "get": {
+        "operationId": "CommunityMembersController_getMembersByStatus",
+        "summary": "Get members by status",
+        "parameters": [
+          {
+            "name": "communityId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "status",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Members retrieved successfully",
+            "content": {
+              "application/json": {
+                "example": [
+                  {
+                    "id": 1,
+                    "role": "ADMIN",
+                    "status": "ACTIVE",
+                    "joined_at": "2025-10-31T10:00:00Z",
+                    "user_id": 123,
+                    "community_id": 1,
+                    "created_on": "2025-10-31T10:00:00Z",
+                    "updated_on": "2025-10-31T10:00:00Z"
+                  },
+                  {
+                    "id": 2,
+                    "role": "MEMBER",
+                    "status": "ACTIVE",
+                    "joined_at": "2025-10-31T11:00:00Z",
+                    "user_id": 124,
+                    "community_id": 1,
+                    "created_on": "2025-10-31T11:00:00Z",
+                    "updated_on": "2025-10-31T11:00:00Z"
+                  }
+                ]
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "example": {
+                  "statusCode": 401,
+                  "message": "Unauthorized",
+                  "error": "Unauthorized"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Community Members"
+        ]
+      }
+    },
+    "/community_members/{id}": {
+      "get": {
+        "operationId": "CommunityMembersController_getCommunityMembersById",
+        "summary": "Get CommunityMembers by id",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Community member retrieved successfully",
+            "content": {
+              "application/json": {
+                "example": {
+                  "id": 1,
+                  "role": "MEMBER",
+                  "status": "ACTIVE",
+                  "joined_at": "2025-10-31T10:00:00Z",
+                  "user_id": 123,
+                  "community_id": 1,
+                  "created_on": "2025-10-31T10:00:00Z",
+                  "updated_on": "2025-10-31T10:00:00Z"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "example": {
+                  "statusCode": 401,
+                  "message": "Unauthorized",
+                  "error": "Unauthorized"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Community member not found",
+            "content": {
+              "application/json": {
+                "example": {
+                  "statusCode": 404,
+                  "message": "Community member not found",
+                  "error": "Not Found"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Community Members"
+        ]
+      },
+      "put": {
+        "operationId": "CommunityMembersController_updateCommunityMembers",
+        "summary": "Update CommunityMembers",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateCommunityMembersDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Community member updated successfully",
+            "content": {
+              "application/json": {
+                "example": {
+                  "id": 1,
+                  "role": "ADMIN",
+                  "status": "ACTIVE",
+                  "joined_at": "2025-10-31T10:00:00Z",
+                  "user_id": 123,
+                  "community_id": 1,
+                  "created_on": "2025-10-31T10:00:00Z",
+                  "updated_on": "2025-10-31T15:30:00Z"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation failed",
+            "content": {
+              "application/json": {
+                "example": {
+                  "statusCode": 400,
+                  "message": "role must be one of the following values: ADMIN, MEMBER; status must be one of the following values: ACTIVE, PENDING, BANNED"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "example": {
+                  "statusCode": 401,
+                  "message": "Unauthorized",
+                  "error": "Unauthorized"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Community member not found",
+            "content": {
+              "application/json": {
+                "example": {
+                  "statusCode": 404,
+                  "message": "Community member not found",
+                  "error": "Not Found"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Community Members"
+        ]
+      },
+      "delete": {
+        "operationId": "CommunityMembersController_deleteCommunityMembers",
+        "summary": "Delete CommunityMembers",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Community member deleted successfully",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "Community member deleted successfully"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "example": {
+                  "statusCode": 401,
+                  "message": "Unauthorized",
+                  "error": "Unauthorized"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Community member not found",
+            "content": {
+              "application/json": {
+                "example": {
+                  "statusCode": 404,
+                  "message": "Community member not found",
+                  "error": "Not Found"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Community Members"
+        ]
+      }
+    },
+    "/achievements": {
+      "post": {
+        "operationId": "AchievementsController_createAchievements",
+        "summary": "Create Achievements",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateAchievementsDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Achievement created successfully",
+            "content": {
+              "application/json": {
+                "example": {
+                  "id": 1,
+                  "title": "30-Day Streak Master",
+                  "description": "Maintain a 30-day consecutive reading streak",
+                  "icon_url": "https://example.com/icons/streak-30.png",
+                  "achievement_type": "STREAK",
+                  "criteria_value": 30,
+                  "sort_order": 1,
+                  "is_active": true,
+                  "created_on": "2025-10-31T10:00:00Z",
+                  "updated_on": "2025-10-31T10:00:00Z"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation failed",
+            "content": {
+              "application/json": {
+                "example": {
+                  "statusCode": 400,
+                  "message": "title must be a string; title should not be empty; achievement_type must be one of the following values: STREAK, SESSIONS, COMPLETION; achievement_type should not be empty; criteria_value must be a number; criteria_value should not be empty"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "example": {
+                  "statusCode": 401,
+                  "message": "Unauthorized",
+                  "error": "Unauthorized"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Achievements"
+        ]
+      },
+      "get": {
+        "operationId": "AchievementsController_getAchievements",
+        "summary": "Get all Achievements",
+        "parameters": [
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "example": 1,
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "example": 10,
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "sort",
+            "required": false,
+            "in": "query",
+            "example": "sort_order",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Achievements retrieved successfully",
+            "content": {
+              "application/json": {
+                "example": {
+                  "data": [
+                    {
+                      "id": 1,
+                      "title": "30-Day Streak Master",
+                      "description": "Maintain a 30-day consecutive reading streak",
+                      "icon_url": "https://example.com/icons/streak-30.png",
+                      "achievement_type": "STREAK",
+                      "criteria_value": 30,
+                      "sort_order": 1,
+                      "is_active": true,
+                      "created_on": "2025-10-31T10:00:00Z",
+                      "updated_on": "2025-10-31T10:00:00Z"
+                    },
+                    {
+                      "id": 2,
+                      "title": "7-Day Streak",
+                      "description": "Maintain a 7-day consecutive reading streak",
+                      "icon_url": "https://example.com/icons/streak-7.png",
+                      "achievement_type": "STREAK",
+                      "criteria_value": 7,
+                      "sort_order": 2,
+                      "is_active": true,
+                      "created_on": "2025-10-31T09:00:00Z",
+                      "updated_on": "2025-10-31T09:00:00Z"
+                    },
+                    {
+                      "id": 3,
+                      "title": "100 Sessions",
+                      "description": "Complete 100 Quran reading sessions",
+                      "icon_url": "https://example.com/icons/sessions-100.png",
+                      "achievement_type": "SESSIONS",
+                      "criteria_value": 100,
+                      "sort_order": 3,
+                      "is_active": true,
+                      "created_on": "2025-10-30T08:00:00Z",
+                      "updated_on": "2025-10-30T08:00:00Z"
+                    }
+                  ],
+                  "meta": {
+                    "total": 25,
+                    "page": 1,
+                    "limit": 10
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "example": {
+                  "statusCode": 401,
+                  "message": "Unauthorized",
+                  "error": "Unauthorized"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Achievements"
+        ]
+      }
+    },
+    "/achievements/type/{type}": {
+      "get": {
+        "operationId": "AchievementsController_findByType",
+        "summary": "Get achievements by type",
+        "parameters": [
+          {
+            "name": "type",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Achievements retrieved by type successfully",
+            "content": {
+              "application/json": {
+                "example": [
+                  {
+                    "id": 1,
+                    "title": "30-Day Streak Master",
+                    "description": "Maintain a 30-day consecutive reading streak",
+                    "icon_url": "https://example.com/icons/streak-30.png",
+                    "achievement_type": "STREAK",
+                    "criteria_value": 30,
+                    "sort_order": 1,
+                    "is_active": true,
+                    "created_on": "2025-10-31T10:00:00Z",
+                    "updated_on": "2025-10-31T10:00:00Z"
+                  },
+                  {
+                    "id": 2,
+                    "title": "7-Day Streak",
+                    "description": "Maintain a 7-day consecutive reading streak",
+                    "icon_url": "https://example.com/icons/streak-7.png",
+                    "achievement_type": "STREAK",
+                    "criteria_value": 7,
+                    "sort_order": 2,
+                    "is_active": true,
+                    "created_on": "2025-10-31T09:00:00Z",
+                    "updated_on": "2025-10-31T09:00:00Z"
+                  }
+                ]
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "example": {
+                  "statusCode": 401,
+                  "message": "Unauthorized",
+                  "error": "Unauthorized"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Achievements"
+        ]
+      }
+    },
+    "/achievements/active": {
+      "get": {
+        "operationId": "AchievementsController_findActive",
+        "summary": "Get active achievements",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Active achievements retrieved successfully",
+            "content": {
+              "application/json": {
+                "example": [
+                  {
+                    "id": 1,
+                    "title": "30-Day Streak Master",
+                    "description": "Maintain a 30-day consecutive reading streak",
+                    "icon_url": "https://example.com/icons/streak-30.png",
+                    "achievement_type": "STREAK",
+                    "criteria_value": 30,
+                    "sort_order": 1,
+                    "is_active": true,
+                    "created_on": "2025-10-31T10:00:00Z",
+                    "updated_on": "2025-10-31T10:00:00Z"
+                  },
+                  {
+                    "id": 3,
+                    "title": "100 Sessions",
+                    "description": "Complete 100 Quran reading sessions",
+                    "icon_url": "https://example.com/icons/sessions-100.png",
+                    "achievement_type": "SESSIONS",
+                    "criteria_value": 100,
+                    "sort_order": 3,
+                    "is_active": true,
+                    "created_on": "2025-10-30T08:00:00Z",
+                    "updated_on": "2025-10-30T08:00:00Z"
+                  }
+                ]
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "example": {
+                  "statusCode": 401,
+                  "message": "Unauthorized",
+                  "error": "Unauthorized"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Achievements"
+        ]
+      }
+    },
+    "/achievements/{id}": {
+      "get": {
+        "operationId": "AchievementsController_getAchievementsById",
+        "summary": "Get Achievements by id",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Achievement retrieved successfully",
+            "content": {
+              "application/json": {
+                "example": {
+                  "id": 1,
+                  "title": "30-Day Streak Master",
+                  "description": "Maintain a 30-day consecutive reading streak",
+                  "icon_url": "https://example.com/icons/streak-30.png",
+                  "achievement_type": "STREAK",
+                  "criteria_value": 30,
+                  "sort_order": 1,
+                  "is_active": true,
+                  "created_on": "2025-10-31T10:00:00Z",
+                  "updated_on": "2025-10-31T10:00:00Z"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "example": {
+                  "statusCode": 401,
+                  "message": "Unauthorized",
+                  "error": "Unauthorized"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Achievement not found",
+            "content": {
+              "application/json": {
+                "example": {
+                  "statusCode": 404,
+                  "message": "Achievement not found",
+                  "error": "Not Found"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Achievements"
+        ]
+      },
+      "put": {
+        "operationId": "AchievementsController_updateAchievements",
+        "summary": "Update Achievements",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateAchievementsDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Achievement updated successfully",
+            "content": {
+              "application/json": {
+                "example": {
+                  "id": 1,
+                  "title": "30-Day Streak Master - Updated",
+                  "description": "Updated description: Maintain a 30-day consecutive reading streak",
+                  "icon_url": "https://example.com/icons/streak-30-v2.png",
+                  "achievement_type": "SESSIONS",
+                  "criteria_value": 50,
+                  "sort_order": 2,
+                  "is_active": false,
+                  "created_on": "2025-10-31T10:00:00Z",
+                  "updated_on": "2025-10-31T15:30:00Z"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation failed",
+            "content": {
+              "application/json": {
+                "example": {
+                  "statusCode": 400,
+                  "message": "achievement_type must be one of the following values: STREAK, SESSIONS, COMPLETION; criteria_value must be a number"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "example": {
+                  "statusCode": 401,
+                  "message": "Unauthorized",
+                  "error": "Unauthorized"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Achievement not found",
+            "content": {
+              "application/json": {
+                "example": {
+                  "statusCode": 404,
+                  "message": "Achievement not found",
+                  "error": "Not Found"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Achievements"
+        ]
+      },
+      "delete": {
+        "operationId": "AchievementsController_deleteAchievements",
+        "summary": "Delete Achievements",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Achievement deleted successfully",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "Achievement deleted successfully"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "example": {
+                  "statusCode": 401,
+                  "message": "Unauthorized",
+                  "error": "Unauthorized"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Achievement not found",
+            "content": {
+              "application/json": {
+                "example": {
+                  "statusCode": 404,
+                  "message": "Achievement not found",
+                  "error": "Not Found"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Achievements"
+        ]
+      }
+    },
+    "/user_achievements": {
+      "post": {
+        "operationId": "UserAchievementsController_createUserAchievements",
+        "summary": "Create UserAchievements",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateUserAchievementsDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "User achievement created successfully",
+            "content": {
+              "application/json": {
+                "example": {
+                  "id": 1,
+                  "progress_value": 15,
+                  "is_completed": false,
+                  "completed_at": null,
+                  "user_id": 123,
+                  "achievement_id": 1,
+                  "created_on": "2025-10-31T10:00:00Z",
+                  "updated_on": "2025-10-31T10:00:00Z"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation failed",
+            "content": {
+              "application/json": {
+                "example": {
+                  "statusCode": 400,
+                  "message": "progress_value must be a number; progress_value should not be empty; is_completed must be a boolean value; is_completed should not be empty; user_id must be a number; user_id should not be empty; achievement_id must be a number; achievement_id should not be empty"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "example": {
+                  "statusCode": 401,
+                  "message": "Unauthorized",
+                  "error": "Unauthorized"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "User Achievements"
+        ]
+      },
+      "get": {
+        "operationId": "UserAchievementsController_getUserAchievements",
+        "summary": "Get all UserAchievements",
+        "parameters": [
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "example": 1,
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "example": 10,
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "sort",
+            "required": false,
+            "in": "query",
+            "example": "-completed_at",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User achievements retrieved successfully",
+            "content": {
+              "application/json": {
+                "example": {
+                  "data": [
+                    {
+                      "id": 1,
+                      "progress_value": 15,
+                      "is_completed": false,
+                      "completed_at": null,
+                      "user_id": 123,
+                      "achievement_id": 1,
+                      "created_on": "2025-10-31T10:00:00Z",
+                      "updated_on": "2025-10-31T10:00:00Z"
+                    },
+                    {
+                      "id": 2,
+                      "progress_value": 7,
+                      "is_completed": true,
+                      "completed_at": "2025-10-30T12:00:00Z",
+                      "user_id": 123,
+                      "achievement_id": 2,
+                      "created_on": "2025-10-25T10:00:00Z",
+                      "updated_on": "2025-10-30T12:00:00Z"
+                    },
+                    {
+                      "id": 3,
+                      "progress_value": 50,
+                      "is_completed": false,
+                      "completed_at": null,
+                      "user_id": 124,
+                      "achievement_id": 3,
+                      "created_on": "2025-10-28T08:00:00Z",
+                      "updated_on": "2025-10-28T08:00:00Z"
+                    }
+                  ],
+                  "meta": {
+                    "total": 150,
+                    "page": 1,
+                    "limit": 10
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "example": {
+                  "statusCode": 401,
+                  "message": "Unauthorized",
+                  "error": "Unauthorized"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "User Achievements"
+        ]
+      }
+    },
+    "/user_achievements/user/{userId}": {
+      "get": {
+        "operationId": "UserAchievementsController_findUserAchievements",
+        "summary": "Get user achievements",
+        "parameters": [
+          {
+            "name": "userId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User achievements retrieved successfully",
+            "content": {
+              "application/json": {
+                "example": [
+                  {
+                    "id": 1,
+                    "progress_value": 15,
+                    "is_completed": false,
+                    "completed_at": null,
+                    "user_id": 123,
+                    "achievement_id": 1,
+                    "achievement": {
+                      "id": 1,
+                      "title": "30-Day Streak Master",
+                      "description": "Maintain a 30-day consecutive reading streak",
+                      "icon_url": "https://example.com/icons/streak-30.png",
+                      "achievement_type": "STREAK",
+                      "criteria_value": 30
+                    },
+                    "created_on": "2025-10-31T10:00:00Z",
+                    "updated_on": "2025-10-31T10:00:00Z"
+                  },
+                  {
+                    "id": 2,
+                    "progress_value": 7,
+                    "is_completed": true,
+                    "completed_at": "2025-10-30T12:00:00Z",
+                    "user_id": 123,
+                    "achievement_id": 2,
+                    "achievement": {
+                      "id": 2,
+                      "title": "7-Day Streak",
+                      "description": "Maintain a 7-day consecutive reading streak",
+                      "icon_url": "https://example.com/icons/streak-7.png",
+                      "achievement_type": "STREAK",
+                      "criteria_value": 7
+                    },
+                    "created_on": "2025-10-25T10:00:00Z",
+                    "updated_on": "2025-10-30T12:00:00Z"
+                  }
+                ]
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "example": {
+                  "statusCode": 401,
+                  "message": "Unauthorized",
+                  "error": "Unauthorized"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "User Achievements"
+        ]
+      }
+    },
+    "/user_achievements/{userId}/{achievementId}/progress": {
+      "patch": {
+        "operationId": "UserAchievementsController_updateProgress",
+        "summary": "Update achievement progress",
+        "parameters": [
+          {
+            "name": "userId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "achievementId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateProgressDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Achievement progress updated successfully",
+            "content": {
+              "application/json": {
+                "example": {
+                  "id": 1,
+                  "progress_value": 20,
+                  "is_completed": false,
+                  "completed_at": null,
+                  "user_id": 123,
+                  "achievement_id": 1,
+                  "created_on": "2025-10-31T10:00:00Z",
+                  "updated_on": "2025-10-31T16:00:00Z"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation failed",
+            "content": {
+              "application/json": {
+                "example": {
+                  "statusCode": 400,
+                  "message": "progress_value must be a number; progress_value should not be empty"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "example": {
+                  "statusCode": 401,
+                  "message": "Unauthorized",
+                  "error": "Unauthorized"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User achievement not found",
+            "content": {
+              "application/json": {
+                "example": {
+                  "statusCode": 404,
+                  "message": "User achievement not found",
+                  "error": "Not Found"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "User Achievements"
+        ]
+      },
+      "get": {
+        "operationId": "UserAchievementsController_getUserProgress",
+        "summary": "Get user achievement progress",
+        "parameters": [
+          {
+            "name": "userId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "achievementId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User achievement progress retrieved successfully",
+            "content": {
+              "application/json": {
+                "example": {
+                  "id": 1,
+                  "progress_value": 15,
+                  "is_completed": false,
+                  "completed_at": null,
+                  "user_id": 123,
+                  "achievement_id": 1,
+                  "achievement": {
+                    "id": 1,
+                    "title": "30-Day Streak Master",
+                    "description": "Maintain a 30-day consecutive reading streak",
+                    "icon_url": "https://example.com/icons/streak-30.png",
+                    "achievement_type": "STREAK",
+                    "criteria_value": 30
+                  },
+                  "progress_percentage": 50,
+                  "created_on": "2025-10-31T10:00:00Z",
+                  "updated_on": "2025-10-31T10:00:00Z"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "example": {
+                  "statusCode": 401,
+                  "message": "Unauthorized",
+                  "error": "Unauthorized"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User achievement not found",
+            "content": {
+              "application/json": {
+                "example": {
+                  "statusCode": 404,
+                  "message": "User achievement not found",
+                  "error": "Not Found"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "User Achievements"
+        ]
+      }
+    },
+    "/user_achievements/{userId}/{achievementId}/complete": {
+      "post": {
+        "operationId": "UserAchievementsController_completeAchievement",
+        "summary": "Complete achievement",
+        "parameters": [
+          {
+            "name": "userId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "achievementId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Achievement completed successfully",
+            "content": {
+              "application/json": {
+                "example": {
+                  "id": 1,
+                  "progress_value": 30,
+                  "is_completed": true,
+                  "completed_at": "2025-10-31T16:00:00Z",
+                  "user_id": 123,
+                  "achievement_id": 1,
+                  "created_on": "2025-10-31T10:00:00Z",
+                  "updated_on": "2025-10-31T16:00:00Z"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Achievement already completed",
+            "content": {
+              "application/json": {
+                "example": {
+                  "statusCode": 400,
+                  "message": "Achievement already completed"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "example": {
+                  "statusCode": 401,
+                  "message": "Unauthorized",
+                  "error": "Unauthorized"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User achievement not found",
+            "content": {
+              "application/json": {
+                "example": {
+                  "statusCode": 404,
+                  "message": "User achievement not found",
+                  "error": "Not Found"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "User Achievements"
+        ]
+      }
+    },
+    "/user_achievements/{id}": {
+      "get": {
+        "operationId": "UserAchievementsController_getUserAchievementsById",
+        "summary": "Get UserAchievements by id",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User achievement retrieved successfully",
+            "content": {
+              "application/json": {
+                "example": {
+                  "id": 1,
+                  "progress_value": 15,
+                  "is_completed": false,
+                  "completed_at": null,
+                  "user_id": 123,
+                  "achievement_id": 1,
+                  "created_on": "2025-10-31T10:00:00Z",
+                  "updated_on": "2025-10-31T10:00:00Z"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "example": {
+                  "statusCode": 401,
+                  "message": "Unauthorized",
+                  "error": "Unauthorized"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User achievement not found",
+            "content": {
+              "application/json": {
+                "example": {
+                  "statusCode": 404,
+                  "message": "User achievement not found",
+                  "error": "Not Found"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "User Achievements"
+        ]
+      },
+      "put": {
+        "operationId": "UserAchievementsController_updateUserAchievements",
+        "summary": "Update UserAchievements",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateUserAchievementsDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User achievement updated successfully",
+            "content": {
+              "application/json": {
+                "example": {
+                  "id": 1,
+                  "progress_value": 30,
+                  "is_completed": true,
+                  "completed_at": "2025-10-31T16:00:00Z",
+                  "user_id": 123,
+                  "achievement_id": 1,
+                  "created_on": "2025-10-31T10:00:00Z",
+                  "updated_on": "2025-10-31T16:00:00Z"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation failed",
+            "content": {
+              "application/json": {
+                "example": {
+                  "statusCode": 400,
+                  "message": "progress_value must be a number; is_completed must be a boolean value"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "example": {
+                  "statusCode": 401,
+                  "message": "Unauthorized",
+                  "error": "Unauthorized"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User achievement not found",
+            "content": {
+              "application/json": {
+                "example": {
+                  "statusCode": 404,
+                  "message": "User achievement not found",
+                  "error": "Not Found"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "User Achievements"
+        ]
+      },
+      "delete": {
+        "operationId": "UserAchievementsController_deleteUserAchievements",
+        "summary": "Delete UserAchievements",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User achievement deleted successfully",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "User achievement deleted successfully"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "example": {
+                  "statusCode": 401,
+                  "message": "Unauthorized",
+                  "error": "Unauthorized"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User achievement not found",
+            "content": {
+              "application/json": {
+                "example": {
+                  "statusCode": 404,
+                  "message": "User achievement not found",
+                  "error": "Not Found"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "User Achievements"
+        ]
+      }
+    }
+  },
+  "info": {
+    "title": "nestjs-typeorm-template",
+    "description": "The Nestjs Template API description",
+    "version": "1.0",
+    "contact": {
+      "name": "uahmadsoft",
+      "url": "uahmadsoft",
+      "email": "umadahmad1928@gmail.com"
+    }
+  },
+  "tags": [],
+  "servers": [],
+  "components": {
+    "securitySchemes": {
+      "authorization": {
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "type": "http"
+      }
+    },
+    "schemas": {
+      "IsAuthPresenter": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "email"
+        ]
+      },
+      "AuthLoginDto": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "example": "user@example.com"
+          },
+          "phone": {
+            "type": "string",
+            "example": "+1234567890"
+          },
+          "password": {
+            "type": "string",
+            "example": "Str0ngP@ssw0rd!"
+          }
+        },
+        "required": [
+          "password"
+        ]
+      },
+      "AuthGoogleDto": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "example": "user@gmail.com"
+          },
+          "is_social_login": {
+            "type": "boolean",
+            "example": true
+          },
+          "name": {
+            "type": "string",
+            "example": "John Doe"
+          },
+          "device_id": {
+            "type": "string",
+            "example": "device-uuid-1234"
+          }
+        },
+        "required": [
+          "email",
+          "name",
+          "device_id"
+        ]
+      },
+      "AuthSignUpDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "John Doe"
+          },
+          "email": {
+            "type": "string",
+            "example": "user@example.com"
+          },
+          "phone": {
+            "type": "string",
+            "example": "+1234567890"
+          },
+          "password": {
+            "type": "string",
+            "example": "Str0ngP@ssw0rd!"
+          },
+          "account_type": {
+            "type": "string",
+            "example": "adult",
+            "enum": [
+              "adult",
+              "parent"
+            ]
+          },
+          "device_id": {
+            "type": "string",
+            "example": "device-uuid-1234"
+          }
+        },
+        "required": [
+          "name",
+          "password"
+        ]
+      },
+      "AuthConfirmSignUpDto": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "number",
+            "example": 123456
+          },
+          "email": {
+            "type": "string",
+            "example": "user@example.com"
+          },
+          "phone": {
+            "type": "string",
+            "example": "+1234567890"
+          }
+        },
+        "required": [
+          "code"
+        ]
+      },
+      "ResendCodeDto": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "example": "user@example.com"
+          },
+          "phone": {
+            "type": "string",
+            "example": "+1234567890"
+          }
+        }
+      },
+      "ForgotPasswordDto": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "example": "user@example.com"
+          }
+        },
+        "required": [
+          "email"
+        ]
+      },
+      "SetPasswordDto": {
+        "type": "object",
+        "properties": {
+          "password": {
+            "type": "string",
+            "example": "NewStr0ngP@ss!"
+          }
+        },
+        "required": [
+          "password"
+        ]
+      },
+      "ResetPasswordDto": {
+        "type": "object",
+        "properties": {
+          "password": {
+            "type": "string",
+            "example": "NewStr0ngP@ss!"
+          },
+          "confirmPassword": {
+            "type": "string",
+            "example": "NewStr0ngP@ss!"
+          }
+        },
+        "required": [
+          "password",
+          "confirmPassword"
+        ]
+      },
+      "UpdatePasswordDto": {
+        "type": "object",
+        "properties": {
+          "currentPassword": {
+            "type": "string",
+            "example": "OldP@ssw0rd!"
+          },
+          "newPassword": {
+            "type": "string",
+            "example": "NewStr0ngP@ss!"
+          }
+        },
+        "required": [
+          "currentPassword",
+          "newPassword"
+        ]
+      },
+      "CreateCommunitiesDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Quran Study Circle"
+          },
+          "description": {
+            "type": "string",
+            "example": "A community dedicated to daily Quran recitation and reflection"
+          },
+          "badge_url": {
+            "type": "string",
+            "example": "https://example.com/badges/quran-circle.png"
+          },
+          "community_type": {
+            "type": "string",
+            "enum": [
+              "PUBLIC",
+              "PRIVATE"
+            ],
+            "example": "PUBLIC"
+          },
+          "join_code": {
+            "type": "string",
+            "example": "QSC2025"
+          }
+        },
+        "required": [
+          "name",
+          "community_type"
+        ]
+      },
+      "UpdateCommunitiesDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Quran Study Circle - Updated"
+          },
+          "description": {
+            "type": "string",
+            "example": "Updated description for our Quran study community"
+          },
+          "badge_url": {
+            "type": "string",
+            "example": "https://example.com/badges/quran-circle-v2.png"
+          },
+          "community_type": {
+            "type": "string",
+            "enum": [
+              "PUBLIC",
+              "PRIVATE"
+            ],
+            "example": "PRIVATE"
+          },
+          "join_code": {
+            "type": "string",
+            "example": "QSC2025NEW"
+          },
+          "is_active": {
+            "type": "boolean",
+            "example": true
+          },
+          "auto_approve_members": {
+            "type": "boolean",
+            "example": true
+          },
+          "created_by_id": {
+            "type": "number",
+            "example": 123
+          }
+        }
+      },
+      "CreateCommunityMembersDto": {
+        "type": "object",
+        "properties": {
+          "role": {
+            "type": "string",
+            "enum": [
+              "ADMIN",
+              "MEMBER"
+            ],
+            "example": "MEMBER"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "ACTIVE",
+              "LEFT"
+            ],
+            "example": "ACTIVE"
+          },
+          "joined_at": {
+            "format": "date-time",
+            "type": "string",
+            "example": "2025-10-31T10:00:00Z"
+          },
+          "user_id": {
+            "type": "number",
+            "example": 123
+          },
+          "community_id": {
+            "type": "number",
+            "example": 1
+          }
+        },
+        "required": [
+          "role",
+          "status",
+          "joined_at",
+          "user_id",
+          "community_id"
+        ]
+      },
+      "AddMemberDto": {
+        "type": "object",
+        "properties": {
+          "user_id": {
+            "type": "number",
+            "example": 124
+          },
+          "community_id": {
+            "type": "number",
+            "example": 1
+          },
+          "role": {
+            "type": "string",
+            "enum": [
+              "ADMIN",
+              "MEMBER"
+            ],
+            "example": "MEMBER"
+          }
+        },
+        "required": [
+          "user_id",
+          "community_id"
+        ]
+      },
+      "RemoveMemberDto": {
+        "type": "object",
+        "properties": {
+          "user_id": {
+            "type": "number",
+            "example": 124
+          },
+          "community_id": {
+            "type": "number",
+            "example": 1
+          }
+        },
+        "required": [
+          "user_id",
+          "community_id"
+        ]
+      },
+      "UpdateCommunityMembersDto": {
+        "type": "object",
+        "properties": {
+          "role": {
+            "type": "string",
+            "enum": [
+              "ADMIN",
+              "MEMBER"
+            ],
+            "example": "ADMIN"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "ACTIVE",
+              "LEFT"
+            ],
+            "example": "LEFT"
+          },
+          "joined_at": {
+            "format": "date-time",
+            "type": "string",
+            "example": "2025-10-31T10:00:00Z"
+          },
+          "user_id": {
+            "type": "number",
+            "example": 123
+          },
+          "community_id": {
+            "type": "number",
+            "example": 1
+          }
+        }
+      },
+      "CreateAchievementsDto": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "example": "30-Day Streak Master"
+          },
+          "description": {
+            "type": "string",
+            "example": "Maintain a 30-day consecutive reading streak"
+          },
+          "icon_url": {
+            "type": "string",
+            "example": "https://example.com/icons/streak-30.png"
+          },
+          "achievement_type": {
+            "type": "string",
+            "enum": [
+              "STREAK",
+              "SESSIONS",
+              "CHALLENGES",
+              "QUIZZES",
+              "KHATAM"
+            ],
+            "example": "STREAK"
+          },
+          "criteria_value": {
+            "type": "number",
+            "example": 30
+          },
+          "sort_order": {
+            "type": "number",
+            "example": 1
+          },
+          "is_active": {
+            "type": "boolean",
+            "example": true
+          }
+        },
+        "required": [
+          "title",
+          "description",
+          "achievement_type",
+          "criteria_value",
+          "sort_order",
+          "is_active"
+        ]
+      },
+      "UpdateAchievementsDto": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "example": "30-Day Streak Master - Updated"
+          },
+          "description": {
+            "type": "string",
+            "example": "Updated description: Maintain a 30-day consecutive reading streak"
+          },
+          "icon_url": {
+            "type": "string",
+            "example": "https://example.com/icons/streak-30-v2.png"
+          },
+          "achievement_type": {
+            "type": "string",
+            "enum": [
+              "STREAK",
+              "SESSIONS",
+              "CHALLENGES",
+              "QUIZZES",
+              "KHATAM"
+            ],
+            "example": "SESSIONS"
+          },
+          "criteria_value": {
+            "type": "number",
+            "example": 50
+          },
+          "sort_order": {
+            "type": "number",
+            "example": 2
+          },
+          "is_active": {
+            "type": "boolean",
+            "example": false
+          }
+        }
+      },
+      "CreateUserAchievementsDto": {
+        "type": "object",
+        "properties": {
+          "progress_value": {
+            "type": "number",
+            "example": 15
+          },
+          "is_completed": {
+            "type": "boolean",
+            "example": false
+          },
+          "completed_at": {
+            "format": "date-time",
+            "type": "string",
+            "example": "2025-10-31T16:00:00Z"
+          },
+          "user_id": {
+            "type": "number",
+            "example": 123
+          },
+          "achievement_id": {
+            "type": "number",
+            "example": 1
+          }
+        },
+        "required": [
+          "progress_value",
+          "is_completed",
+          "user_id",
+          "achievement_id"
+        ]
+      },
+      "UpdateProgressDto": {
+        "type": "object",
+        "properties": {
+          "progress_value": {
+            "type": "number",
+            "example": 15
+          }
+        },
+        "required": [
+          "progress_value"
+        ]
+      },
+      "UpdateUserAchievementsDto": {
+        "type": "object",
+        "properties": {
+          "progress_value": {
+            "type": "number",
+            "example": 30
+          },
+          "is_completed": {
+            "type": "boolean",
+            "example": true
+          },
+          "completed_at": {
+            "format": "date-time",
+            "type": "string",
+            "example": "2025-10-31T16:00:00Z"
+          },
+          "user_id": {
+            "type": "number",
+            "example": 123
+          },
+          "achievement_id": {
+            "type": "number",
+            "example": 1
+          }
+        }
+      },
+      "ResponseFormat": {
+        "type": "object",
+        "properties": {
+          "isArray": {
+            "type": "boolean"
+          },
+          "path": {
+            "type": "string"
+          },
+          "duration": {
+            "type": "string"
+          },
+          "method": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "isArray",
+          "path",
+          "duration",
+          "method"
+        ]
+      }
+    }
+  }
+}
